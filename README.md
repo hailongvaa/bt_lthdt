@@ -86,3 +86,4 @@ java "-Dfile.encoding=UTF-8" -cp bin group.GroupDemo
 * **Encapsulation (Đóng gói)**: Sử dụng các phạm vi truy cập `private` cho thuộc tính và cung cấp `public getter/setter` để bảo vệ dữ liệu.
 * **Inheritance & Polymorphism (Kế thừa & Đa hình)**: Ghi đè các phương thức từ lớp cha cao nhất `Object` (`toString`, `equals`, `hashCode`) và kế thừa interface `Comparable`.
 * **Abstraction (Trừu tượng hóa)**: Mô hình hóa các thực thể ngoài đời thực (Sách, Sinh viên, Bảng điểm) thành các lớp trong chương trình.
+# bt_lthdt

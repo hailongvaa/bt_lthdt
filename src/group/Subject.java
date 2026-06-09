@@ -3,17 +3,30 @@ package group;
 import java.util.Objects;
 
 /**
- * Lớp biểu diễn thông tin Môn học (Subject) trong hệ thống Quản lý điểm.
- * Chứa các chú thích cho Ngày 1, Ngày 2 và Ngày 3.
+ * ============================================================================
+ * Lớp trừu tượng biểu diễn thông tin Môn học (Subject) trong hệ thống Quản lý điểm.
+ * 
+ * KIẾN THỨC OOP ÁP DỤNG:
+ * 1. Lớp trừu tượng (Abstract Class):
+ *    - `Subject` không đại diện cho một môn học cụ thể nào có thể tự tính điểm, mà nó chỉ
+ *      chứa thông tin cấu trúc chung của một môn học (mã, tên, số tín chỉ).
+ *    - Đóng vai trò làm bộ khung (template) cho các loại môn học thực tế kế thừa.
+ * 
+ * 2. Phương thức trừu tượng (Abstract Method):
+ *    - `calculateFinalGrade(...)`: Mỗi loại môn học (Lý thuyết, Thực hành, Đồ án...)
+ *      có quy tắc tính điểm tổng kết khác nhau.
+ *    - Do đó, phương thức này được khai báo abstract để lớp con tự định nghĩa công thức
+ *      tính điểm phù hợp.
+ * ============================================================================
  */
-public class Subject implements Comparable<Subject> { // NGÀY 3: implements Comparable để hỗ trợ so sánh mặc định
+public abstract class Subject implements Comparable<Subject> {
 
     // ==========================================
     // BÀI TẬP NHÓM - NGÀY 1: Định nghĩa dữ liệu (Fields)
     // ==========================================
-    private String subjectId;
-    private String subjectName;
-    private int credits;
+    protected String subjectId;
+    protected String subjectName;
+    protected int credits;
 
     // ==========================================
     // BÀI TẬP NHÓM - NGÀY 1: Constructor mặc định & Constructor đầy đủ tham số
@@ -31,7 +44,7 @@ public class Subject implements Comparable<Subject> { // NGÀY 3: implements Com
     // BÀI TẬP NHÓM - NGÀY 2: Constructor tự động sinh ID sử dụng IdGenerator
     // ==========================================
     public Subject(String subjectName, int credits) {
-        this.subjectId = IdGenerator.generateSubjectId(); // Sử dụng IdGenerator để sinh mã môn học tự động
+        this.subjectId = IdGenerator.generateSubjectId(); // Tự động sinh ID duy nhất
         this.subjectName = subjectName;
         this.credits = credits;
     }
@@ -63,6 +76,14 @@ public class Subject implements Comparable<Subject> { // NGÀY 3: implements Com
         this.credits = credits;
     }
 
+    /**
+     * Phương thức trừu tượng tính điểm tổng kết môn học.
+     * @param processGrade Điểm quá trình
+     * @param examGrade Điểm thi cuối kỳ
+     * @return Điểm tổng kết sau khi làm tròn 2 chữ số thập phân
+     */
+    public abstract double calculateFinalGrade(double processGrade, double examGrade);
+
     // ==========================================
     // BÀI TẬP NHÓM - NGÀY 3: Ghi đè phương thức toString()
     // ==========================================
@@ -90,7 +111,7 @@ public class Subject implements Comparable<Subject> { // NGÀY 3: implements Com
     }
 
     // ==========================================
-    // BÀI TẬP NHÓM - NGÀY 3: Ghi đè phương thức compareTo()
+    // BÀI TẬP NHÓM - NGÀY 3: Ghi đè phương thức compareTo() từ Comparable
     // Sắp xếp mặc định: So sánh theo Tên môn học (Alphabetical Order).
     // ==========================================
     @Override

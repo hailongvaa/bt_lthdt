@@ -7,9 +7,22 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * ==========================================
+ * ============================================================================
  * BÀI TẬP CÁ NHÂN - NGÀY 3: Demo sắp xếp và chạy chương trình
- * ==========================================
+ * 
+ * KIẾN THỨC CỐT LÕI VỀ SẮP XẾP TRONG JAVA:
+ * 1. Comparable vs Comparator:
+ *    - `Comparable`: Định nghĩa tiêu chí sắp xếp "mặc định" và nội bộ của lớp. Lớp phải
+ *      implements Comparable và ghi đè compareTo(). Phù hợp cho tiêu chí sắp xếp tự nhiên nhất.
+ *    - `Comparator`: Định nghĩa tiêu chí sắp xếp "ngoại vi" (bên ngoài). Giúp ta sắp xếp danh sách
+ *      theo nhiều tiêu chí khác nhau (ví dụ: theo năm xuất bản, theo số lượng...) mà không cần sửa
+ *      nội dung code của lớp gốc.
+ * 
+ * 2. Các cách viết Comparator trong Java:
+ *    - Cách 1: Sử dụng Lớp vô danh (Anonymous Class) - Cách viết truyền thống (từ Java 7 trở về trước).
+ *    - Cách 2: Sử dụng biểu thức Lambda (Lambda Expression) - Cách viết ngắn gọn, tối giản (từ Java 8).
+ *    - Cách 3: Sử dụng Method Reference kết hợp các hàm tiện ích của Comparator (tối tân từ Java 8).
+ * ============================================================================
  */
 public class PersonalDemo {
     public static void main(String[] args) {
@@ -42,9 +55,11 @@ public class PersonalDemo {
 
         // 2. Kiểm chứng equals() và hashCode() (Ngày 3)
         System.out.println("\n--- Kiểm chứng equals() và hashCode() (Ngày 3) ---");
+        // bookDuplicate có ID trùng với book1 nhưng các trường khác khác nhau
         Book bookDuplicate = new Book(book1.getBookId(), "Java Nâng Cao", "Nguyễn Văn A", "NXB Giáo Dục", 2024, 2);
         System.out.println("book1 ID: " + book1.getBookId() + " | Tên: " + book1.getTitle());
         System.out.println("bookDuplicate ID: " + bookDuplicate.getBookId() + " | Tên: " + bookDuplicate.getTitle());
+        // Do ta đã ghi đè equals dựa trên bookId nên kết quả trả về true
         System.out.println("book1.equals(bookDuplicate)? -> " + book1.equals(bookDuplicate));
         System.out.println("book1.hashCode() == bookDuplicate.hashCode()? -> " + (book1.hashCode() == bookDuplicate.hashCode()));
 
@@ -60,11 +75,12 @@ public class PersonalDemo {
         printBookList(books);
 
         // Tiêu chí 1: Sắp xếp mặc định bằng Comparable (Theo Tên sách Alphabetical)
+        // Lệnh Collections.sort(list) tự động gọi compareTo() được viết trong Book.java
         System.out.println("\n--- Sắp xếp 1: Theo tên sách tăng dần (Mặc định - Comparable) ---");
         Collections.sort(books);
         printBookList(books);
 
-        // Tiêu chí 2: Sắp xếp theo Năm xuất bản tăng dần (sử dụng Comparator)
+        // Tiêu chí 2: Sắp xếp theo Năm xuất bản tăng dần (sử dụng Comparator với Anonymous Class)
         System.out.println("\n--- Sắp xếp 2: Theo năm xuất bản tăng dần (Comparator) ---");
         books.sort(new Comparator<Book>() {
             @Override
@@ -75,11 +91,13 @@ public class PersonalDemo {
         printBookList(books);
 
         // Tiêu chí 3: Sắp xếp theo Số lượng giảm dần (sử dụng Comparator với Lambda expression)
+        // Cú pháp rút gọn từ việc bỏ khai báo kiểu dữ liệu và chữ new Comparator
         System.out.println("\n--- Sắp xếp 3: Theo số lượng giảm dần (Comparator - Lambda) ---");
         books.sort((b1, b2) -> Integer.compare(b2.getQuantity(), b1.getQuantity()));
         printBookList(books);
 
-        // Tiêu chí 4: Sắp xếp theo Tác giả Alphabetical (sử dụng Comparator.comparing)
+        // Tiêu chí 4: Sắp xếp theo Tác giả Alphabetical (sử dụng Comparator.comparing + Method Reference)
+        // Book::getAuthor là Method Reference, tương đương với b -> b.getAuthor()
         System.out.println("\n--- Sắp xếp 4: Theo tác giả Alphabetical (Comparator.comparing) ---");
         books.sort(Comparator.comparing(Book::getAuthor));
         printBookList(books);

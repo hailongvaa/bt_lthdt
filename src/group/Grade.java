@@ -3,18 +3,42 @@ package group;
 import java.util.Objects;
 
 /**
+ * ============================================================================
  * Lớp biểu diễn điểm số (Grade) của Sinh viên đối với một Môn học.
- * Chứa các chú thích cho Ngày 1, Ngày 2 và Ngày 3.
+ * 
+ * KIẾN THỨC OOP ÁP DỤNG:
+ * 1. Lớp liên kết (Association Class):
+ *    - `Grade` đóng vai trò là một liên kết "nhiều-nhiều" giữa Sinh viên (`Student`) 
+ *      và Môn học (`Subject`). Nó chứa các thuộc tính bổ sung cho mối quan hệ này:
+ *      `processGrade` (Điểm quá trình) và `examGrade` (Điểm thi).
+ * 
+ * 2. Tính Đa hình động (Dynamic Binding / Polymorphism):
+ *    - Trong phương thức `getFinalGrade()`, ta gọi `this.subject.calculateFinalGrade(...)`.
+ *    - Mặc dù biến `subject` được khai báo kiểu dữ liệu tĩnh là lớp cha `Subject` (abstract),
+ *      nhưng tại thời điểm chạy (runtime), Java Virtual Machine (JVM) sẽ tự động phát hiện
+ *      đối tượng thực tế là `TheorySubject` hay `PracticalSubject` để thực thi đúng công thức
+ *      tính điểm tương ứng.
+ *    - Tránh hoàn toàn việc sử dụng các cấu trúc kiểm tra kiểu dữ liệu thô sơ và khó bảo trì 
+ *      như `if (subject instanceof TheorySubject) ... else if ...`.
+ * 
+ * 3. Ghi đè (Override) & Độc lập dữ liệu:
+ *    - `equals()` và `hashCode()` được định nghĩa dựa trên cả 2 đối tượng `student` và `subject`.
+ *      Có nghĩa là: Một sinh viên chỉ có duy nhất một bản ghi điểm cho một môn học cụ thể.
+ * 
+ * 4. So sánh (`Comparable`):
+ *    - Triển khai `Comparable<Grade>` và override `compareTo()`.
+ *    - Sắp xếp mặc định: Thứ tự Điểm tổng kết GIẢM DẦN (Điểm cao đứng trước).
+ * ============================================================================
  */
-public class Grade implements Comparable<Grade> { // NGÀY 3: implements Comparable để hỗ trợ so sánh mặc định
+public class Grade implements Comparable<Grade> {
 
     // ==========================================
     // BÀI TẬP NHÓM - NGÀY 1: Định nghĩa dữ liệu (Fields)
     // ==========================================
     private Student student;
     private Subject subject;
-    private double processGrade; // Điểm quá trình (trọng số 40% hoặc 0.4)
-    private double examGrade;    // Điểm thi cuối kỳ (trọng số 60% hoặc 0.6)
+    private double processGrade; // Điểm quá trình
+    private double examGrade;    // Điểm thi cuối kỳ
 
     // ==========================================
     // BÀI TẬP NHÓM - NGÀY 1: Constructor mặc định & Constructor đầy đủ tham số
@@ -28,12 +52,6 @@ public class Grade implements Comparable<Grade> { // NGÀY 3: implements Compara
         this.processGrade = processGrade;
         this.examGrade = examGrade;
     }
-
-    // ==========================================
-    // BÀI TẬP NHÓM - NGÀY 2: Note về việc sử dụng đối tượng sinh ID tự động
-    // Lớp Grade là lớp liên kết (Association Class) giữa Student và Subject. 
-    // Do đó, nó sử dụng trực tiếp các thực thể Student và Subject đã được sinh ID bằng IdGenerator.
-    // ==========================================
 
     // ==========================================
     // BÀI TẬP NHÓM - NGÀY 1: Các phương thức Getter và Setter
@@ -70,16 +88,21 @@ public class Grade implements Comparable<Grade> { // NGÀY 3: implements Compara
         this.examGrade = examGrade;
     }
 
-    // ==========================================
-    // BÀI TẬP NHÓM - NGÀY 1: Nghiệp vụ tính Điểm tổng kết và Quy đổi điểm chữ
-    // ==========================================
-    // Điểm tổng kết hệ 10 = Điểm quá trình * 0.4 + Điểm thi * 0.6
+    /**
+     * TÍNH ĐA HÌNH TRONG NGHIỆP VỤ:
+     * Tự động tính điểm tổng kết dựa trên công thức của lớp con thực tế (Theory/Practical).
+     */
     public double getFinalGrade() {
-        double rawGrade = (this.processGrade * 0.4) + (this.examGrade * 0.6);
-        return Math.round(rawGrade * 100.0) / 100.0; // Làm tròn 2 chữ số thập phân
+        if (this.subject == null) {
+            return 0.0;
+        }
+        // Gọi phương thức đa hình của đối tượng Subject cụ thể
+        return this.subject.calculateFinalGrade(this.processGrade, this.examGrade);
     }
 
-    // Quy đổi điểm hệ 10 sang điểm chữ (A, B, C, D, F)
+    /**
+     * Quy đổi điểm hệ 10 sang điểm chữ (A, B, C, D, F) theo chuẩn tín chỉ
+     */
     public String getGradeLetter() {
         double finalGrade = getFinalGrade();
         if (finalGrade >= 8.5) return "A";
@@ -105,7 +128,7 @@ public class Grade implements Comparable<Grade> { // NGÀY 3: implements Compara
 
     // ==========================================
     // BÀI TẬP NHÓM - NGÀY 3: Ghi đè phương thức equals() và hashCode()
-    // Hai đầu điểm bằng nhau nếu trùng cả sinh viên (Student) và môn học (Subject).
+    // Một bản ghi điểm được xác định duy nhất bởi cặp (Sinh viên, Môn học).
     // ==========================================
     @Override
     public boolean equals(Object o) {
@@ -121,8 +144,9 @@ public class Grade implements Comparable<Grade> { // NGÀY 3: implements Compara
     }
 
     // ==========================================
-    // BÀI TẬP NHÓM - NGÀY 3: Ghi đè phương thức compareTo()
+    // BÀI TẬP NHÓM - NGÀY 3: Ghi đè phương thức compareTo() từ Comparable
     // Sắp xếp mặc định: So sánh theo Điểm tổng kết giảm dần (Điểm cao đứng trước).
+    // Logic: `Double.compare(other.getFinalGrade(), this.getFinalGrade())`
     // ==========================================
     @Override
     public int compareTo(Grade other) {

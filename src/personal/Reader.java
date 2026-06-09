@@ -3,10 +3,30 @@ package personal;
 import java.util.Objects;
 
 /**
+ * ============================================================================
  * Lớp biểu diễn thông tin Độc giả (Reader) trong Thư viện mini.
- * Chứa các chú thích cho Ngày 1, Ngày 2 và Ngày 3.
+ * 
+ * KIẾN THỨC OOP ÁP DỤNG:
+ * 1. Đóng gói (Encapsulation):
+ *    - Các thuộc tính (readerId, name, email, phoneNumber, address) đều là private.
+ *    - Cung cấp các phương thức public getter/setter để tương tác với dữ liệu.
+ * 
+ * 2. Nạp chồng Constructor (Constructor Overloading):
+ *    - Constructor mặc định không tham số.
+ *    - Constructor đầy đủ tham số để truyền mã độc giả tự định nghĩa.
+ *    - Constructor tự động sinh mã độc giả bằng cách gọi `IdGenerator.generateReaderId()`.
+ * 
+ * 3. Ghi đè phương thức (Method Overriding) & Đa hình:
+ *    - `toString()`: Trả về thông tin hiển thị định dạng chuỗi dễ đọc.
+ *    - `equals()` và `hashCode()`: Định nghĩa cơ chế so sánh bằng nhau dựa trên thuộc tính
+ *      `readerId` thay vì địa chỉ ô nhớ mặc định của đối tượng.
+ * 
+ * 4. So sánh đối tượng (`Comparable`):
+ *    - Kế thừa `Comparable<Reader>` và ghi đè `compareTo(Reader other)`.
+ *    - Quy định cách thức sắp xếp mặc định là theo Tên độc giả (name) tăng dần (Alphabetical).
+ * ============================================================================
  */
-public class Reader implements Comparable<Reader> { // NGÀY 3: implements Comparable để hỗ trợ so sánh mặc định
+public class Reader implements Comparable<Reader> {
 
     // ==========================================
     // BÀI TẬP CÁ NHÂN - NGÀY 1: Định nghĩa dữ liệu (Fields)
@@ -18,11 +38,14 @@ public class Reader implements Comparable<Reader> { // NGÀY 3: implements Compa
     private String address;
 
     // ==========================================
-    // BÀI TẬP CÁ NHÂN - NGÀY 1: Constructor mặc định & Constructor đầy đủ tham số
+    // BÀI TẬP CÁ NHÂN - NGÀY 1: Constructor mặc định
     // ==========================================
     public Reader() {
     }
 
+    // ==========================================
+    // BÀI TẬP CÁ NHÂN - NGÀY 1: Constructor đầy đủ tham số
+    // ==========================================
     public Reader(String readerId, String name, String email, String phoneNumber, String address) {
         this.readerId = readerId;
         this.name = name;
@@ -35,7 +58,7 @@ public class Reader implements Comparable<Reader> { // NGÀY 3: implements Compa
     // BÀI TẬP CÁ NHÂN - NGÀY 2: Constructor tự động sinh ID sử dụng IdGenerator
     // ==========================================
     public Reader(String name, String email, String phoneNumber, String address) {
-        this.readerId = IdGenerator.generateReaderId(); // Sử dụng IdGenerator để sinh mã độc giả tự động
+        this.readerId = IdGenerator.generateReaderId(); // Tự động sinh ID duy nhất
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -112,7 +135,7 @@ public class Reader implements Comparable<Reader> { // NGÀY 3: implements Compa
     }
 
     // ==========================================
-    // BÀI TẬP CÁ NHÂN - NGÀY 3: Ghi đè phương thức compareTo()
+    // BÀI TẬP CÁ NHÂN - NGÀY 3: Ghi đè phương thức compareTo() từ Comparable
     // Sắp xếp mặc định: So sánh theo Tên độc giả (Alphabetical Order).
     // ==========================================
     @Override

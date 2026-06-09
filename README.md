@@ -21,8 +21,12 @@ d:\btvn_ltcb\
 │   │   └── PersonalDemo.java
 │   └── group\              <-- Bài tập nhóm
 │       ├── IdGenerator.java
+│       ├── Person.java
 │       ├── Student.java
+│       ├── Teacher.java
 │       ├── Subject.java
+│       ├── TheorySubject.java
+│       ├── PracticalSubject.java
 │       ├── Grade.java
 │       └── GroupDemo.java
 └── bin\                    <-- Chứa các file .class sau khi biên dịch (tự động tạo)
@@ -57,6 +61,20 @@ d:\btvn_ltcb\
   4. **Triển khai `Comparator` (sắp xếp theo nhiều tùy chọn)**:
      * Dùng khi muốn sắp xếp theo các tiêu chí khác nhau (ví dụ: Sách sắp theo Năm xuất bản, Số lượng; Điểm sắp theo tên Sinh viên hoặc tên Môn học).
      * Triển khai bằng Anonymous Class hoặc biểu thức Lambda.
+
+### 🗓️ NGÀY 4: Áp dụng Kế thừa (Inheritance) và Đa hình (Polymorphism)
+* **Mục tiêu**: Vận dụng các đặc trưng cốt lõi của Lập trình hướng đối tượng (Kế thừa, Đa hình, Trừu tượng hóa, Đóng gói) để xây dựng hệ thống phân cấp thực thể và giải quyết các logic nghiệp vụ linh hoạt.
+* **Chi tiết hiện thực**:
+  1. **Nhánh kế thừa `Person`**:
+     * Khai báo lớp trừu tượng `Person` chứa thông tin chung (`fullName`, `dateOfBirth`) và phương thức abstract `getRole()`.
+     * Cho lớp `Student` kế thừa `Person`, bổ sung `studentId`, `classroom` và ghi đè `getRole()`.
+     * Tạo thêm lớp con `Teacher` (Giảng viên) kế thừa `Person`, bổ sung `teacherId`, `department` và ghi đè `getRole()`.
+     * Thực nghiệm tính đa hình: Quản lý danh sách chung dạng `List<Person>` chứa cả đối tượng `Student` và `Teacher`, duyệt danh sách để hiển thị thông tin đa hình.
+  2. **Nhánh kế thừa `Subject`**:
+     * Chuyển `Subject` thành lớp trừu tượng và khai báo phương thức trừu tượng `calculateFinalGrade(processGrade, examGrade)`.
+     * Tạo lớp con `TheorySubject` (Môn lý thuyết) kế thừa `Subject`, tính điểm tổng kết theo công thức: **40% quá trình + 60% thi cuối kỳ**.
+     * Tạo lớp con `PracticalSubject` (Môn thực hành) kế thừa `Subject`, tính điểm tổng kết theo công thức: **50% quá trình + 50% thi cuối kỳ**.
+     * Thực nghiệm tính đa hình trong lớp `Grade`: Phương thức `getFinalGrade()` gọi phương thức đa hình `subject.calculateFinalGrade(...)`. Bảng điểm tự động áp dụng đúng công thức tính điểm của từng loại môn học mà không cần dùng cấu trúc rẽ nhánh `if-else` phức tạp.
 
 ---
 

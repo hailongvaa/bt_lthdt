@@ -104,4 +104,20 @@ java "-Dfile.encoding=UTF-8" -cp bin group.GroupDemo
 * **Encapsulation (Đóng gói)**: Sử dụng các phạm vi truy cập `private` cho thuộc tính và cung cấp `public getter/setter` để bảo vệ dữ liệu.
 * **Inheritance & Polymorphism (Kế thừa & Đa hình)**: Ghi đè các phương thức từ lớp cha cao nhất `Object` (`toString`, `equals`, `hashCode`) và kế thừa interface `Comparable`.
 * **Abstraction (Trừu tượng hóa)**: Mô hình hóa các thực thể ngoài đời thực (Sách, Sinh viên, Bảng điểm) thành các lớp trong chương trình.
+
+---
+
+## 👥 Phân chia công việc nhóm (src/group)
+
+Dưới đây là bảng phân chia công việc chi tiết cho từng thành viên trong nhóm 6 người thực hiện phần bài tập nhóm (`src/group`), bao gồm phạm vi file và các dòng mã nguồn cụ thể mà mỗi thành viên chịu trách nhiệm phát triển:
+
+| Thành viên | File đảm nhận | Dòng code chi tiết | Nội dung công việc chính |
+| :--- | :--- | :--- | :--- |
+| **Nguyễn Hải Long** (Trưởng nhóm) | [IdGenerator.java](file:///d:/btvn_ltcb/src/group/IdGenerator.java)<br>[GroupDemo.java](file:///d:/btvn_ltcb/src/group/GroupDemo.java) | [IdGenerator.java:L1-52](file:///d:/btvn_ltcb/src/group/IdGenerator.java#L1-L52) (Toàn bộ)<br>[GroupDemo.java:L1-179](file:///d:/btvn_ltcb/src/group/GroupDemo.java#L1-L179) (Toàn bộ) | - Xây dựng bộ sinh ID tự động tĩnh (`static synchronized`).<br>- Viết hàm main điều khiển, khởi tạo dữ liệu mẫu, demo đa hình và chạy các kịch bản sắp xếp. |
+| **Phương Linh** | [Person.java](file:///d:/btvn_ltcb/src/group/Person.java)<br>[Student.java](file:///d:/btvn_ltcb/src/group/Student.java) | [Person.java:L1-67](file:///d:/btvn_ltcb/src/group/Person.java#L1-L67) (Toàn bộ)<br>[Student.java:L1-74](file:///d:/btvn_ltcb/src/group/Student.java#L1-L74) | - Thiết lập lớp trừu tượng cha [Person](file:///d:/btvn_ltcb/src/group/Person.java) (thuộc tính protected, hàm dựng, getter/setter).<br>- Định nghĩa phần cơ bản của lớp [Student](file:///d:/btvn_ltcb/src/group/Student.java) kế thừa `Person` (thuộc tính riêng, hàm dựng ủy quyền `super` và getter/setter). |
+| **Khánh Linh** | [Student.java](file:///d:/btvn_ltcb/src/group/Student.java)<br>[Teacher.java](file:///d:/btvn_ltcb/src/group/Teacher.java) | [Student.java:L75-122](file:///d:/btvn_ltcb/src/group/Student.java#L75-L122)<br>[Teacher.java:L1-92](file:///d:/btvn_ltcb/src/group/Teacher.java#L1-L92) (Toàn bộ) | - Hoàn thiện các phương thức đa hình và so sánh của [Student](file:///d:/btvn_ltcb/src/group/Student.java) (`getRole()`, `toString()`, `equals()`, `hashCode()`, `compareTo()`).<br>- Thiết lập lớp [Teacher](file:///d:/btvn_ltcb/src/group/Teacher.java) kế thừa `Person` đầy đủ các hàm dựng, getter/setter, đa hình và Comparable. |
+| **Phúc** | [Subject.java](file:///d:/btvn_ltcb/src/group/Subject.java) | [Subject.java:L1-125](file:///d:/btvn_ltcb/src/group/Subject.java#L1-L125) (Toàn bộ) | - Xây dựng lớp trừu tượng [Subject](file:///d:/btvn_ltcb/src/group/Subject.java) định nghĩa khung môn học, phương thức tính điểm trừu tượng `calculateFinalGrade()` và các phương thức so sánh mặc định. |
+| **Hân** | [TheorySubject.java](file:///d:/btvn_ltcb/src/group/TheorySubject.java)<br>[PracticalSubject.java](file:///d:/btvn_ltcb/src/group/PracticalSubject.java) | [TheorySubject.java:L1-49](file:///d:/btvn_ltcb/src/group/TheorySubject.java#L1-L49) (Toàn bộ)<br>[PracticalSubject.java:L1-49](file:///d:/btvn_ltcb/src/group/PracticalSubject.java#L1-L49) (Toàn bộ) | - Hiện thực hóa lớp môn học lý thuyết [TheorySubject](file:///d:/btvn_ltcb/src/group/TheorySubject.java) (tính điểm theo tỉ lệ 40%/60% và làm tròn).<br>- Hiện thực hóa lớp môn học thực hành [PracticalSubject](file:///d:/btvn_ltcb/src/group/PracticalSubject.java) (tính điểm theo tỉ lệ 50%/50% và làm tròn). |
+| **Kim Ngân** | [Grade.java](file:///d:/btvn_ltcb/src/group/Grade.java) | [Grade.java:L1-156](file:///d:/btvn_ltcb/src/group/Grade.java#L1-L156) (Toàn bộ) | - Thiết kế lớp liên kết [Grade](file:///d:/btvn_ltcb/src/group/Grade.java) kết nối `Student` và `Subject`.<br>- Hiện thực tính đa hình động qua môn học (`getFinalGrade()`), quy đổi điểm chữ, override so sánh mặc định (`Comparable`). |
+
 # bt_lthdt

@@ -114,7 +114,7 @@ public class GroupDemo {
         grades.sort(new Comparator<Grade>() {
             @Override
             public int compare(Grade g1, Grade g2) {
-                return g1.getStudent().getFullName().compareToIgnoreCase(g2.getStudent().getFullName());
+                return Person.compareVietnameseNames(g1.getStudent().getFullName(), g2.getStudent().getFullName());
             }
         });
         printGradeList(grades);
@@ -149,9 +149,36 @@ public class GroupDemo {
             if (compClass != 0) {
                 return compClass;
             }
-            return s1.getFullName().compareToIgnoreCase(s2.getFullName());
+            return Person.compareVietnameseNames(s1.getFullName(), s2.getFullName());
         });
         printStudentList(students);
+
+        // 6. Tính GPA và xếp loại học lực cho từng sinh viên (Tính năng bổ sung hoàn thiện)
+        System.out.println("\n--- Báo cáo kết quả học tập (GPA & Xếp loại) ---");
+        for (Student s : students) {
+            double gpa = calculateGPA(s, grades);
+            String classification = getClassification(gpa);
+            System.out.printf("  - Sinh viên: %-18s (%s) | Lớp: %s | GPA: %4.2f | Học lực: %s\n",
+                    s.getFullName(), s.getStudentId(), s.getClassroom(), gpa, classification);
+        }
+
+        // 7. Demo kiểm tra qua môn & ném ngoại lệ validation khi nhập điểm không hợp lệ
+        System.out.println("\n--- Demo kiểm tra qua môn & Validation dữ liệu ---");
+        System.out.println("Kiểm tra kết quả qua môn học của các sinh viên:");
+        for (Grade g : grades) {
+            System.out.printf("  - SV: %s | Môn: %-30s | Điểm tổng kết: %.2f | Kết quả: %s\n",
+                    g.getStudent().getFullName(),
+                    g.getSubject().getSubjectName(),
+                    g.getFinalGrade(),
+                    g.isPassed() ? "ĐẠT (PASS)" : "TRƯỢT (FAIL)");
+        }
+
+        try {
+            System.out.println("\nThử tạo đối tượng Grade với điểm thi không hợp lệ (15.0):");
+            new Grade(sv1, mh1, 8.0, 15.0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("  -> Bắt được ngoại lệ mong đợi: " + e.getMessage());
+        }
     }
 
     private static void printGradeList(List<Grade> list) {
@@ -174,5 +201,37 @@ public class GroupDemo {
             System.out.printf("  - ID: %s | Tên: %-18s | Ngày sinh: %s | Lớp: %s\n",
                     s.getStudentId(), s.getFullName(), s.getDateOfBirth(), s.getClassroom());
         }
+    }
+
+    /**
+     * Tính điểm trung bình học lực (GPA) của sinh viên dựa trên trọng số tín chỉ của môn học.
+     */
+    private static double calculateGPA(Student student, List<Grade> gradeList) {
+        double totalWeightedGrade = 0.0;
+        int totalCredits = 0;
+        for (Grade g : gradeList) {
+            if (g.getStudent().equals(student)) {
+                int credits = g.getSubject().getCredits();
+                totalWeightedGrade += g.getFinalGrade() * credits;
+                totalCredits += credits;
+            }
+        }
+        if (totalCredits == 0) {
+            return 0.0;
+        }
+        double rawGPA = totalWeightedGrade / totalCredits;
+        return Math.round(rawGPA * 100.0) / 100.0; // Làm tròn 2 chữ số thập phân
+    }
+
+    /**
+     * Phân loại học lực dựa trên điểm trung bình tích lũy hệ 10.
+     */
+    private static String getClassification(double gpa) {
+        if (gpa >= 9.0) return "Xuất sắc";
+        if (gpa >= 8.0) return "Giỏi";
+        if (gpa >= 6.5) return "Khá";
+        if (gpa >= 5.0) return "Trung bình";
+        if (gpa >= 4.0) return "Yếu";
+        return "Kém";
     }
 }

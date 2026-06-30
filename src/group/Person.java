@@ -59,6 +59,41 @@ public abstract class Person {
      */
     public abstract String getRole();
 
+    /**
+     * So sánh hai chuỗi họ tên theo quy tắc tiếng Việt (Tên -> Tên đệm -> Họ).
+     * Ví dụ: "Nguyễn Hoàng Long" sẽ đứng sau "Phạm Đức Anh" vì tên "Long" > "Anh".
+     */
+    public static int compareVietnameseNames(String name1, String name2) {
+        if (name1 == null) return name2 == null ? 0 : -1;
+        if (name2 == null) return 1;
+
+        String[] parts1 = name1.trim().split("\\s+");
+        String[] parts2 = name2.trim().split("\\s+");
+
+        if (parts1.length == 0) return parts2.length == 0 ? 0 : -1;
+        if (parts2.length == 0) return 1;
+
+        // So sánh tên chính (từ cuối cùng) trước
+        String firstName1 = parts1[parts1.length - 1];
+        String firstName2 = parts2[parts2.length - 1];
+        int cmp = firstName1.compareToIgnoreCase(firstName2);
+        if (cmp != 0) {
+            return cmp;
+        }
+
+        // Nếu trùng tên chính, so sánh từ đầu đến trước tên chính
+        int minLen = Math.min(parts1.length, parts2.length);
+        for (int i = 0; i < minLen - 1; i++) {
+            cmp = parts1[i].compareToIgnoreCase(parts2[i]);
+            if (cmp != 0) {
+                return cmp;
+            }
+        }
+
+        // Nếu tất cả các phần trùng nhau, so sánh theo độ dài mảng từ
+        return Integer.compare(parts1.length, parts2.length);
+    }
+
     @Override
     public String toString() {
         return String.format("Họ tên='%s', Ngày sinh=%s", fullName, dateOfBirth);

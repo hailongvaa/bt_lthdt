@@ -83,9 +83,6 @@ public class Teacher extends Person implements Comparable<Teacher> {
 
     @Override
     public int compareTo(Teacher other) {
-        if (this.fullName == null || other.fullName == null) {
-            return 0;
-        }
-        return this.fullName.compareToIgnoreCase(other.fullName);
+        return Person.compareVietnameseNames(this.fullName, other.fullName);
     }
 }

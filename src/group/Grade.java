@@ -46,7 +46,15 @@ public class Grade implements Comparable<Grade> {
     public Grade() {
     }
 
+    private void validateGrade(double grade, String name) {
+        if (grade < 0.0 || grade > 10.0) {
+            throw new IllegalArgumentException(name + " phải nằm trong khoảng từ 0.0 đến 10.0");
+        }
+    }
+
     public Grade(Student student, Subject subject, double processGrade, double examGrade) {
+        validateGrade(processGrade, "Điểm quá trình");
+        validateGrade(examGrade, "Điểm thi cuối kỳ");
         this.student = student;
         this.subject = subject;
         this.processGrade = processGrade;
@@ -77,6 +85,7 @@ public class Grade implements Comparable<Grade> {
     }
 
     public void setProcessGrade(double processGrade) {
+        validateGrade(processGrade, "Điểm quá trình");
         this.processGrade = processGrade;
     }
 
@@ -85,6 +94,7 @@ public class Grade implements Comparable<Grade> {
     }
 
     public void setExamGrade(double examGrade) {
+        validateGrade(examGrade, "Điểm thi cuối kỳ");
         this.examGrade = examGrade;
     }
 
@@ -110,6 +120,13 @@ public class Grade implements Comparable<Grade> {
         if (finalGrade >= 5.5) return "C";
         if (finalGrade >= 4.0) return "D";
         return "F";
+    }
+
+    /**
+     * Kiểm tra sinh viên có qua môn học này hay không (Điểm tổng kết >= 4.0).
+     */
+    public boolean isPassed() {
+        return getFinalGrade() >= 4.0;
     }
 
     // ==========================================

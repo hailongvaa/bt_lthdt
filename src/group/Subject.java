@@ -34,7 +34,14 @@ public abstract class Subject implements Comparable<Subject> {
     public Subject() {
     }
 
+    private void validateCredits(int credits) {
+        if (credits <= 0) {
+            throw new IllegalArgumentException("Số tín chỉ phải lớn hơn 0");
+        }
+    }
+
     public Subject(String subjectId, String subjectName, int credits) {
+        validateCredits(credits);
         this.subjectId = subjectId;
         this.subjectName = subjectName;
         this.credits = credits;
@@ -44,6 +51,7 @@ public abstract class Subject implements Comparable<Subject> {
     // BÀI TẬP NHÓM - NGÀY 2: Constructor tự động sinh ID sử dụng IdGenerator
     // ==========================================
     public Subject(String subjectName, int credits) {
+        validateCredits(credits);
         this.subjectId = IdGenerator.generateSubjectId(); // Tự động sinh ID duy nhất
         this.subjectName = subjectName;
         this.credits = credits;
@@ -73,6 +81,7 @@ public abstract class Subject implements Comparable<Subject> {
     }
 
     public void setCredits(int credits) {
+        validateCredits(credits);
         this.credits = credits;
     }
 
